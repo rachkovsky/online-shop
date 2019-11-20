@@ -1,8 +1,11 @@
 const button = document.querySelector('.menu-toggle');
 
-button.addEventListener('click', () => {
-    document.body.classList.toggle('menu-opened');
-});
+if (button) {
+    button.addEventListener('click', () => {
+        document.body.classList.toggle('menu-opened');
+    });
+}
+
 
 const products = [
     {
