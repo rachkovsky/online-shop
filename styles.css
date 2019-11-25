@@ -137,6 +137,7 @@ button.menu-toggle {
 .product-content img {
     display: block;
     max-width: 100%;
+    min-width: 200px;
     margin: auto;
 }
 

@@ -1,4 +1,4 @@
-const products = JSON.parse(localStorage.getItem('products')) || [];
+let products = JSON.parse(localStorage.getItem('products')) || [];
 
 function showProducts(products) {
 
@@ -28,12 +28,27 @@ function showProducts(products) {
     document.querySelector('.products-container').innerHTML = view;
 
 }
+
 showProducts(products);
 
+let delayFormServer = new Promise((resolve, reject) => {
+    setTimeout(() => reject({ id: 123 }), 6000);
+});
+
 document.querySelector('.products-container').addEventListener('click', (e) => {
-    console.log(e);
-    if (e.target.nodeName = 'BUTTON' && e.target.getAttribute('id')) {
-        console.log('ololo');
+    if (e.target.nodeName = 'BUTTON' && e.target.dataset.id) {
+        console.log(e.target.dataset.id);
+        products = products.filter((product) => {
+            return +product.id !== +e.target.dataset.id;
+        });
+        localStorage.setItem('products', JSON.stringify(products));
+
+
+        delayFormServer.then((result) => {
+            console.log('promise: ', result);
+        });
+
+        showProducts(products);
     }
 });
 
@@ -59,6 +74,7 @@ function handleForm() {
         console.log(data.id);
         products.push(data);
         localStorage.setItem('products', JSON.stringify(products));
+        showProducts(products);
 
     });
 

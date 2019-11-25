@@ -7,63 +7,26 @@ if (button) {
 }
 
 
-const products = [
-    {
-        name: 'T-shirt',
-        size: 'M',
-        color: 'green',
-        image: './images/product.png',
-        price: '15'
-    },
-    {
-        name: 'Pants',
-        size: 'S',
-        color: 'yellow',
-        image: './images/product.png',
-        price: '25'
-    },
-    {
-        name: 'Pants',
-        size: 'L',
-        color: 'black',
-        image: './images/product2.png',
-        price: '45'
-    },
-    {
-        name: 'Pants',
-        size: 'L',
-        color: 'black',
-        image: './images/product2.png',
-        price: '45'
-    },
-    {
-        name: 'Pants',
-        size: 'L',
-        color: 'black',
-        image: './images/product.png',
-        price: '45'
-    },
-];
+let products = JSON.parse(localStorage.getItem('products')) || [];
 
 function showProducts(products) {
 
     let view = '';
 
     for (product of products) {
-        console.log(product);
         view += `
         <li class="product">
             <a class="product-link" href="#">
                 <div class="product-header">
-                    <div class="product-size">size: ${product.size}</div>
-                    <div class="product-color">color: ${product.color}</div>
+                    <div class="product-size">size: ${product.size || ''}</div>
+                    <div class="product-color">color: ${product.color || 'unknown'}</div>
                 </div>
                 <div class="product-content">
-                    <img src="${product.image}" alt="">
+                    <img src="${product.imageUrl || './images/product.png'}" alt="">
                 </div>
                 <div class="product-footer">
-                    <div class="product-name">${product.name}</div>
-                    <div class="product-price">${product.price}$</div>
+                    <div class="product-name">${product.name || ''}</div>
+                    <div class="product-price">${product.price || ''}$</div>
                 </div>
             </a>
         </li>`
@@ -90,3 +53,34 @@ document.querySelector('#add-product').addEventListener('click', () => {
 });
 
 showProducts(products);
+
+
+
+// filter
+const menCheckbox = document.getElementById('checkbox-men');
+const womenCheckbox = document.getElementById('checkbox-women');
+
+const searchParams = new URLSearchParams(window.location.search);
+for (let param of searchParams) {
+    if (param[0] === menCheckbox.value) {
+        menCheckbox.checked = true;
+        products = products.filter((product) => {
+            return product.gender === menCheckbox.value;
+        });
+        showProducts(products);
+    }
+}
+
+menCheckbox.addEventListener('change', (e) => {
+    if (e.target.checked) {
+        searchParams.set(e.target.value, 'true');
+        let string = searchParams.toString();
+        window.location.search = string; //should be modified
+
+    } else {
+        //....
+    }
+});
+
+
+
