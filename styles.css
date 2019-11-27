@@ -106,6 +106,7 @@ button.menu-toggle {
 }
 
 .products-wrapper {
+	width: 100%;
     max-width: 1100px;
 }
 
@@ -137,7 +138,6 @@ button.menu-toggle {
 .product-content img {
     display: block;
     max-width: 100%;
-    min-width: 200px;
     margin: auto;
 }
 
