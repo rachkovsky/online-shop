@@ -6,6 +6,14 @@ if (button) {
 	});
 }
 
+const filter = {
+	gender: ['men'],
+	price: {
+		min: '0',
+		max: '9000'
+	}
+}
+
 
 let products = JSON.parse(localStorage.getItem('products')) || [];
 
@@ -69,13 +77,28 @@ for (let param of searchParams) {
 }
 
 menCheckbox.addEventListener('change', (e) => {
-	let string = searchParams.toString();
+
 	if (e.target.checked) {
 		searchParams.set(e.target.value, 'true');
-		window.history.replaceState(null, null, window.location.origin + '?' + string);
+		window.history.replaceState(null, null, window.location.origin + '?' + searchParams.toString());
+		if (menCheckbox.checked === true) {
+			products = products.filter((p) => {
+				return p.gender === 'men';
+			});
+		}
+		showProducts(products);
 
 	} else {
-		searchParams.set(e.target.value, 'false');
-		window.history.replaceState(null, null, window.location.origin + '?' + string);
+		searchParams.delete(e.target.value);
+		window.history.replaceState(null, null, window.location.origin + '?' + searchParams.toString());
+		products = JSON.parse(localStorage.getItem('products'));
+		showProducts(products);
 	}
 });
+
+
+if (menCheckbox.checked === true) {
+	products = products.filter((p) => {
+		return p.gender === 'men';
+	});
+}

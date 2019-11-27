@@ -1,11 +1,11 @@
 let products = JSON.parse(localStorage.getItem('products')) || [];
+console.log('+++++', products);
 
 function showProducts(products) {
 
     let view = '';
 
     for (product of products) {
-        console.log(product);
         view += `
         <li class="product">
             <a class="product-link" href="#">
@@ -31,10 +31,6 @@ function showProducts(products) {
 
 showProducts(products);
 
-let delayFormServer = new Promise((resolve, reject) => {
-    setTimeout(() => reject({ id: 123 }), 6000);
-});
-
 document.querySelector('.products-container').addEventListener('click', (e) => {
     if (e.target.nodeName = 'BUTTON' && e.target.dataset.id) {
         console.log(e.target.dataset.id);
@@ -42,22 +38,15 @@ document.querySelector('.products-container').addEventListener('click', (e) => {
             return +product.id !== +e.target.dataset.id;
         });
         localStorage.setItem('products', JSON.stringify(products));
-
-
-        delayFormServer.then((result) => {
-            console.log('promise: ', result);
-        });
-
         showProducts(products);
     }
 });
 
 
-
-
 function handleForm() {
 
-    const data = {
+    const inputs = document.querySelectorAll('form.add-product input[name]');
+    let data = {
         id: '',
         name: '',
         price: '',
@@ -65,20 +54,33 @@ function handleForm() {
         color: '',
         gender: '',
         imageUrl: '',
-
     }
 
     document.getElementById('add-product').addEventListener('click', (e) => {
         e.preventDefault();
-        data.id = Date.now();
-        console.log(data.id);
-        products.push(data);
-        localStorage.setItem('products', JSON.stringify(products));
-        showProducts(products);
+
+        if (data.name.length >= 3 && data.price) {
+            data.id = Date.now();
+
+            products.push(data);
+            console.log('push: ', data);
+            console.log('------ ', products);
+            localStorage.setItem('products', JSON.stringify(products));
+            showProducts(products);
+            data = {
+                id: '',
+                name: '',
+                price: '',
+                size: '',
+                color: '',
+                gender: '',
+                imageUrl: '',
+            }
+        } else {
+            alert('Incorrect form');
+        }
 
     });
-
-    const inputs = document.querySelectorAll('form.add-product input[name]');
 
     for (input of inputs) {
         input.addEventListener('input', (e) => {
