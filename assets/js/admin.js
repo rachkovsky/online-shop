@@ -1,12 +1,11 @@
 let products = JSON.parse(localStorage.getItem('products')) || [];
-console.log('+++++', products);
 
 function showProducts(products) {
 
-    let view = '';
+	let view = '';
 
-    for (product of products) {
-        view += `
+	for (product of products) {
+		view += `
         <li class="product">
             <a class="product-link" href="#">
                 <div class="product-header">
@@ -23,71 +22,69 @@ function showProducts(products) {
             </a>
             <button class="remove-product" data-id="${product.id}">Remove</button>  
         </li>`
-    }
+	}
 
-    document.querySelector('.products-container').innerHTML = view;
+	document.querySelector('.products-container').innerHTML = view;
 
 }
-
-showProducts(products);
-
-document.querySelector('.products-container').addEventListener('click', (e) => {
-    if (e.target.nodeName = 'BUTTON' && e.target.dataset.id) {
-        console.log(e.target.dataset.id);
-        products = products.filter((product) => {
-            return +product.id !== +e.target.dataset.id;
-        });
-        localStorage.setItem('products', JSON.stringify(products));
-        showProducts(products);
-    }
-});
-
 
 function handleForm() {
 
-    const inputs = document.querySelectorAll('form.add-product input[name]');
-    let data = {
-        id: '',
-        name: '',
-        price: '',
-        size: '',
-        color: '',
-        gender: '',
-        imageUrl: '',
-    }
+	const inputs = document.querySelectorAll('form.add-product input[name]');
+	let data = {
+		id: '',
+		name: '',
+		price: '',
+		size: '',
+		color: '',
+		gender: '',
+		imageUrl: '',
+	}
 
-    document.getElementById('add-product').addEventListener('click', (e) => {
-        e.preventDefault();
+	document.getElementById('add-product').addEventListener('click', (e) => {
+		e.preventDefault();
 
-        if (data.name.length >= 3 && data.price) {
-            data.id = Date.now();
+		if (data.name.length >= 3 && data.price) {
+			data.id = Date.now();
+			products.push(data);
+			localStorage.setItem('products', JSON.stringify(products));
+			showProducts(products);
+			data = {
+				id: '',
+				name: '',
+				price: '',
+				size: '',
+				color: '',
+				gender: '',
+				imageUrl: '',
+			}
+			for (input of inputs) {
+				input.value = '';
+			}
+		} else {
+			alert('Incorrect form');
+		}
 
-            products.push(data);
-            console.log('push: ', data);
-            console.log('------ ', products);
-            localStorage.setItem('products', JSON.stringify(products));
-            showProducts(products);
-            data = {
-                id: '',
-                name: '',
-                price: '',
-                size: '',
-                color: '',
-                gender: '',
-                imageUrl: '',
-            }
-        } else {
-            alert('Incorrect form');
-        }
+	});
 
-    });
-
-    for (input of inputs) {
-        input.addEventListener('input', (e) => {
-            data[e.target.attributes.name.value] = e.target.value;
-            console.log(data);
-        });
-    }
+	for (input of inputs) {
+		input.addEventListener('input', (e) => {
+			data[e.target.attributes.name.value] = e.target.value;
+			console.log(data);
+		});
+	}
 }
 
+document.querySelector('.products-container').addEventListener('click', (e) => {
+	if (e.target.nodeName = 'BUTTON' && e.target.dataset.id) {
+		console.log(e.target.dataset.id);
+		products = products.filter((product) => {
+			return +product.id !== +e.target.dataset.id;
+		});
+		localStorage.setItem('products', JSON.stringify(products));
+		showProducts(products);
+	}
+});
+
+showProducts(products);
 handleForm();

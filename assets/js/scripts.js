@@ -6,15 +6,6 @@ if (button) {
 	});
 }
 
-const filter = {
-	gender: ['men'],
-	price: {
-		min: '0',
-		max: '9000'
-	}
-}
-
-
 let products = JSON.parse(localStorage.getItem('products')) || [];
 
 function showProducts(products) {
@@ -44,7 +35,6 @@ function showProducts(products) {
 
 }
 
-
 function addProduct() {
 	products.push({
 		name: 'New',
@@ -56,49 +46,52 @@ function addProduct() {
 	showProducts(products);
 }
 
-
 showProducts(products);
 
 
 
 // filter
-const menCheckbox = document.getElementById('checkbox-men');
-const womenCheckbox = document.getElementById('checkbox-women');
 
+const genderCheckboxes = document.querySelectorAll('input[type=checkbox][name=gender]');
+const filterOptions = {
+	gender: []
+};
 const searchParams = new URLSearchParams(window.location.search);
-for (let param of searchParams) {
-	if (param[0] === menCheckbox.value) {
-		menCheckbox.checked = true;
-		products = products.filter((product) => {
-			return product.gender === menCheckbox.value;
-		});
-		showProducts(products);
+
+for (let param of searchParams.entries()) {
+	filterOptions[param[0]] = param[1].split(',');
+}
+
+for (let checkbox of genderCheckboxes) {
+	if (filterOptions[checkbox.name] && filterOptions[checkbox.name].includes(checkbox.value)) {
+		checkbox.checked = true;
 	}
 }
 
-menCheckbox.addEventListener('change', (e) => {
 
-	if (e.target.checked) {
-		searchParams.set(e.target.value, 'true');
-		window.history.replaceState(null, null, window.location.origin + '?' + searchParams.toString());
-		if (menCheckbox.checked === true) {
-			products = products.filter((p) => {
-				return p.gender === 'men';
-			});
+for (let checkbox of genderCheckboxes) {
+	checkbox.addEventListener('click', function (e) {
+		if (checkbox.checked && !filterOptions[checkbox.name].includes(checkbox.value)) {
+			filterOptions[checkbox.name].push(checkbox.value);
+		} else {
+			const options = filterOptions[checkbox.name];
+			for (var i in options) {
+				if (options[i] == checkbox.value) {
+					options.splice(i, 1);
+					break;
+				}
+			}
 		}
-		showProducts(products);
 
-	} else {
-		searchParams.delete(e.target.value);
+		// products = products.filter(product => {
+		/// to do ...
+		// });
+
+		searchParams.set(checkbox.name, filterOptions[checkbox.name]);
 		window.history.replaceState(null, null, window.location.origin + '?' + searchParams.toString());
-		products = JSON.parse(localStorage.getItem('products'));
-		showProducts(products);
-	}
-});
-
-
-if (menCheckbox.checked === true) {
-	products = products.filter((p) => {
-		return p.gender === 'men';
 	});
+}
+
+function filterProducts(filterOptions) {
+
 }
