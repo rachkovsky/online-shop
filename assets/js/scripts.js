@@ -7,6 +7,8 @@ if (button) {
 }
 
 let products = JSON.parse(localStorage.getItem('products')) || [];
+let filteredProducts = [];
+
 
 function showProducts(products) {
 
@@ -46,9 +48,6 @@ function addProduct() {
 	showProducts(products);
 }
 
-showProducts(products);
-
-
 
 // filter
 
@@ -59,7 +58,10 @@ const filterOptions = {
 const searchParams = new URLSearchParams(window.location.search);
 
 for (let param of searchParams.entries()) {
-	filterOptions[param[0]] = param[1].split(',');
+	console.log(param);
+	if (param[1]) {
+		filterOptions[param[0]] = param[1].split(',');
+	}
 }
 
 for (let checkbox of genderCheckboxes) {
@@ -67,6 +69,18 @@ for (let checkbox of genderCheckboxes) {
 		checkbox.checked = true;
 	}
 }
+
+if (filterOptions.gender && filterOptions.gender.length > 0) {
+	console.log(filterOptions);
+	filteredProducts = products.filter(pr => {
+		return filterOptions['gender'].includes(pr.gender);
+	});
+	showProducts(filteredProducts);
+} else {
+	showProducts(products);
+}
+
+
 
 
 for (let checkbox of genderCheckboxes) {
@@ -82,16 +96,18 @@ for (let checkbox of genderCheckboxes) {
 				}
 			}
 		}
+		if (filterOptions[checkbox.name].length > 0) {
+			filteredProducts = products.filter(pr => {
+				return filterOptions[checkbox.name].includes(pr.gender);
+			});
+			showProducts(filteredProducts);
+		} else {
+			showProducts(products);
+		}
 
-		// products = products.filter(product => {
-		/// to do ...
-		// });
 
 		searchParams.set(checkbox.name, filterOptions[checkbox.name]);
-		window.history.replaceState(null, null, window.location.origin + '?' + searchParams.toString());
+		window.history.replaceState(null, null, window.location.origin + (searchParams.toString() ? '?' + searchParams.toString() : ''));
+		console.log(filterOptions);
 	});
-}
-
-function filterProducts(filterOptions) {
-
 }
