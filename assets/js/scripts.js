@@ -1,28 +1,30 @@
-const button = document.querySelector('.menu-toggle');
+document.addEventListener('DOMContentLoaded', (event) => {
 
-if (button) {
-	button.addEventListener('click', () => {
-		document.body.classList.toggle('menu-opened');
-	});
-}
+	const button = document.querySelector('.menu-toggle');
 
-const filter = {
-	gender: ['men'],
-	price: {
-		min: '0',
-		max: '9000'
+	if (button) {
+		button.addEventListener('click', () => {
+			document.body.classList.toggle('menu-opened');
+		});
 	}
-}
+
+	const filter = {
+		gender: ['men'],
+		price: {
+			min: '0',
+			max: '9000'
+		}
+	}
 
 
-let products = JSON.parse(localStorage.getItem('products')) || [];
+	let products = JSON.parse(localStorage.getItem('products')) || [];
 
-function showProducts(products) {
+	function showProducts(products) {
 
-	let view = '';
+		let view = '';
 
-	for (product of products) {
-		view += `
+		for (product of products) {
+			view += `
         <li class="product">
             <a class="product-link" href="#">
                 <div class="product-header">
@@ -38,67 +40,69 @@ function showProducts(products) {
                 </div>
             </a>
         </li>`
+		}
+
+		document.querySelector('.products-container').innerHTML = view;
+
 	}
 
-	document.querySelector('.products-container').innerHTML = view;
 
-}
-
-
-function addProduct() {
-	products.push({
-		name: 'New',
-		size: 'XXL',
-		color: 'green',
-		image: './images/product2.png',
-		price: '115'
-	});
-	showProducts(products);
-}
-
-
-showProducts(products);
-
-
-
-// filter
-const menCheckbox = document.getElementById('checkbox-men');
-const womenCheckbox = document.getElementById('checkbox-women');
-
-const searchParams = new URLSearchParams(window.location.search);
-for (let param of searchParams) {
-	if (param[0] === menCheckbox.value) {
-		menCheckbox.checked = true;
-		products = products.filter((product) => {
-			return product.gender === menCheckbox.value;
+	function addProduct() {
+		products.push({
+			name: 'New',
+			size: 'XXL',
+			color: 'green',
+			image: './images/product2.png',
+			price: '115'
 		});
 		showProducts(products);
 	}
-}
 
-menCheckbox.addEventListener('change', (e) => {
 
-	if (e.target.checked) {
-		searchParams.set(e.target.value, 'true');
-		window.history.replaceState(null, null, window.location.origin + '?' + searchParams.toString());
-		if (menCheckbox.checked === true) {
-			products = products.filter((p) => {
-				return p.gender === 'men';
+	showProducts(products);
+
+
+
+	// filter
+	const menCheckbox = document.getElementById('checkbox-men');
+	const womenCheckbox = document.getElementById('checkbox-women');
+
+	const searchParams = new URLSearchParams(window.location.search);
+	for (let param of searchParams) {
+		if (param[0] === menCheckbox.value) {
+			menCheckbox.checked = true;
+			products = products.filter((product) => {
+				return product.gender === menCheckbox.value;
 			});
+			showProducts(products);
 		}
-		showProducts(products);
-
-	} else {
-		searchParams.delete(e.target.value);
-		window.history.replaceState(null, null, window.location.origin + '?' + searchParams.toString());
-		products = JSON.parse(localStorage.getItem('products'));
-		showProducts(products);
 	}
-});
 
+	menCheckbox.addEventListener('change', (e) => {
 
-if (menCheckbox.checked === true) {
-	products = products.filter((p) => {
-		return p.gender === 'men';
+		if (e.target.checked) {
+			searchParams.set(e.target.value, 'true');
+			window.history.replaceState(null, null, window.location.origin + '?' + searchParams.toString());
+			if (menCheckbox.checked === true) {
+				products = products.filter((p) => {
+					return p.gender === 'men';
+				});
+			}
+			showProducts(products);
+
+		} else {
+			searchParams.delete(e.target.value);
+			window.history.replaceState(null, null, window.location.origin + '?' + searchParams.toString());
+			products = JSON.parse(localStorage.getItem('products'));
+			showProducts(products);
+		}
 	});
-}
+
+
+	if (menCheckbox.checked === true) {
+		products = products.filter((p) => {
+			return p.gender === 'men';
+		});
+	}
+
+});

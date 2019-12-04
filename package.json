@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "app.js",
 	"scripts": {
+		"build": "webpack --config webpack.config.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
@@ -17,9 +18,15 @@
 	},
 	"homepage": "https://github.com/rachkovsky/online-shop#readme",
 	"dependencies": {
-		"express": "^4.17.1"
+		"express": "^4.17.1",
+		"hbs": "^4.0.6"
 	},
 	"devDependencies": {
-		"nodemon": "^2.0.1"
+		"@babel/core": "^7.7.4",
+		"@babel/preset-env": "^7.7.4",
+		"babel-loader": "^8.0.6",
+		"nodemon": "^2.0.1",
+		"webpack": "^4.41.2",
+		"webpack-cli": "^3.3.10"
 	}
 }

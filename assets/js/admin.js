@@ -56,31 +56,37 @@ function handleForm() {
         imageUrl: '',
     }
 
-    document.getElementById('add-product').addEventListener('click', (e) => {
-        e.preventDefault();
+    const addProductButton = document.getElementById('add-product');
 
-        if (data.name.length >= 3 && data.price) {
-            data.id = Date.now();
+    if (addProductButton) {
+        addProductButton.addEventListener('click', (e) => {
+            e.preventDefault();
 
-            products.push(data);
-            console.log('push: ', data);
-            console.log('------ ', products);
-            localStorage.setItem('products', JSON.stringify(products));
-            showProducts(products);
-            data = {
-                id: '',
-                name: '',
-                price: '',
-                size: '',
-                color: '',
-                gender: '',
-                imageUrl: '',
+            if (data.name.length >= 3 && data.price) {
+                data.id = Date.now();
+
+                products.push(data);
+                console.log('push: ', data);
+                console.log('------ ', products);
+                localStorage.setItem('products', JSON.stringify(products));
+                showProducts(products);
+                data = {
+                    id: '',
+                    name: '',
+                    price: '',
+                    size: '',
+                    color: '',
+                    gender: '',
+                    imageUrl: '',
+                }
+            } else {
+                alert('Incorrect form');
             }
-        } else {
-            alert('Incorrect form');
-        }
 
-    });
+        });
+    }
+
+
 
     for (input of inputs) {
         input.addEventListener('input', (e) => {
