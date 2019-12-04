@@ -92,6 +92,7 @@ button.menu-toggle {
     display: flex;
     justify-content: center;
     margin: 2rem auto;
+	padding: 0 1rem;
 }
 
 .products-container {
