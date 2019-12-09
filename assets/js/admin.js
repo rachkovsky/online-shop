@@ -31,6 +31,7 @@ function showProducts(products) {
 function handleForm() {
 
     const inputs = document.querySelectorAll('form.add-product input[name]');
+    const addProduct = document.getElementById('add-product');
     let data = {
         id: '',
         name: '',
@@ -40,32 +41,35 @@ function handleForm() {
         gender: '',
         imageUrl: '',
     }
+    if (addProduct) {
+        document.getElementById('add-product').addEventListener('click', (e) => {
+            e.preventDefault();
 
-    document.getElementById('add-product').addEventListener('click', (e) => {
-        e.preventDefault();
+            if (data.name.length >= 3 && data.price) {
+                data.id = Date.now();
+                products.push(data);
+                localStorage.setItem('products', JSON.stringify(products));
+                showProducts(products);
+                data = {
+                    id: '',
+                    name: '',
+                    price: '',
+                    size: '',
+                    color: '',
+                    gender: '',
+                    imageUrl: '',
+                }
+                for (input of inputs) {
+                    input.value = '';
 
-        if (data.name.length >= 3 && data.price) {
-            data.id = Date.now();
-            products.push(data);
-            localStorage.setItem('products', JSON.stringify(products));
-            showProducts(products);
-            data = {
-                id: '',
-                name: '',
-                price: '',
-                size: '',
-                color: '',
-                gender: '',
-                imageUrl: '',
+                }
+            } else {
+                alert('Incorrect form');
             }
-            for (input of inputs) {
-                input.value = '';
-            }
-        } else {
-            alert('Incorrect form');
-        }
 
-    });
+        });
+    }
+
 
     for (input of inputs) {
         input.addEventListener('input', (e) => {
