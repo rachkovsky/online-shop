@@ -9,7 +9,7 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0-deibq.mongodb.net/test?retr
 	if (err) throw err;
 	console.log('Successfully connected');
 
-	const modelProduct = mongoose.model(Product);
+	const modelProduct = mongoose.model('Product', Product);
 	const product = new modelProduct({
 		name: 'ololo',
 		size: 'ololo',
@@ -24,9 +24,6 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0-deibq.mongodb.net/test?retr
 	product.save(function (err) {
 		if (!err) console.log('Success!');
 	});
-
-
-
 });
 
 

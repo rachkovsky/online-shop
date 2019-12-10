@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		}
 	}
 
-
 	let products = JSON.parse(localStorage.getItem('products')) || [];
 
 	function showProducts(products) {

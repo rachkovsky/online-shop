@@ -1,6 +1,4 @@
-// JS
-import './assets/js/scripts';
-import './assets/js/admin';
+import './assets/js/scripts.js';
+import './assets/js/admin.js';
 
-// SASS
 import './assets/sass/main.sass';
