@@ -13,4 +13,4 @@ const Product = Schema({
 	imageUrl: String
 });
 
-module.exports = Product;
+module.exports = mongoose.model('Product', Product, 'products');
