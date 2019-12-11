@@ -1,2 +1,2 @@
 # online-shop
-# zurueckdenken@klonteskacondos.com
+# login: zurueckdenken@klonteskacondos.com, pass: 00570057
