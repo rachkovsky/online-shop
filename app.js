@@ -51,6 +51,12 @@ app.get('/admin', function (req, res) {
 	res.render('admin');;
 });
 
+app.get('/products', function (req, res) {
+	productModel.find({}, function (err, products) {
+		res.send(products);
+	});
+});
+
 app.post('/add-product', function (req, res) {
 	console.log(req.body);
 	res.json({
