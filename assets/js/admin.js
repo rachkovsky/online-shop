@@ -1,94 +1,116 @@
-let products = JSON.parse(localStorage.getItem('products')) || [];
+// let products = JSON.parse(localStorage.getItem('products')) || [];
 
-function showProducts(products) {
+// function showProducts(products) {
 
-    let view = '';
+//     let view = '';
 
-    for (product of products) {
-        view += `
-        <li class="product">
-            <a class="product-link" href="#">
-                <div class="product-header">
-                    <div class="product-size">size: ${product.size}</div>
-                    <div class="product-color">color: ${product.color}</div>
-                </div>
-                <div class="product-content">
-                    <img src="${product.imageUrl || './images/product.png'}" alt="">
-                </div>
-                <div class="product-footer">
-                    <div class="product-name">${product.name}</div>
-                    <div class="product-price">${product.price}$</div>
-                </div>
-            </a>
-            <button class="remove-product" data-id="${product.id}">Remove</button>  
-        </li>`
-    }
+//     for (product of products) {
+//         view += `
+//         <li class="product">
+//             <a class="product-link" href="#">
+//                 <div class="product-header">
+//                     <div class="product-size">size: ${product.size}</div>
+//                     <div class="product-color">color: ${product.color}</div>
+//                 </div>
+//                 <div class="product-content">
+//                     <img src="${product.imageUrl || './images/product.png'}" alt="">
+//                 </div>
+//                 <div class="product-footer">
+//                     <div class="product-name">${product.name}</div>
+//                     <div class="product-price">${product.price}$</div>
+//                 </div>
+//             </a>
+//             <button class="remove-product" data-id="${product.id}">Remove</button>  
+//         </li>`
+//     }
 
-    document.querySelector('.products-container').innerHTML = view;
+//     document.querySelector('.products-container').innerHTML = view;
 
-}
+// }
 
-function handleForm() {
+// function handleForm() {
 
-    const inputs = document.querySelectorAll('form.add-product input[name]');
-    const addProduct = document.getElementById('add-product');
-    let data = {
-        id: '',
-        name: '',
-        price: '',
-        size: '',
-        color: '',
-        gender: '',
-        imageUrl: '',
-    }
-    if (addProduct) {
-        document.getElementById('add-product').addEventListener('click', (e) => {
-            e.preventDefault();
+//     const inputs = document.querySelectorAll('form.add-product input[name]');
+//     const addProduct = document.getElementById('add-product');
+//     let data = {
+//         id: '',
+//         name: '',
+//         price: '',
+//         size: '',
+//         color: '',
+//         gender: '',
+//         imageUrl: '',
+//     }
+//     if (addProduct) {
+//         document.getElementById('add-product').addEventListener('click', (e) => {
+//             e.preventDefault();
 
-            if (data.name.length >= 3 && data.price) {
-                data.id = Date.now();
-                products.push(data);
-                localStorage.setItem('products', JSON.stringify(products));
-                showProducts(products);
-                data = {
-                    id: '',
-                    name: '',
-                    price: '',
-                    size: '',
-                    color: '',
-                    gender: '',
-                    imageUrl: '',
-                }
-                for (input of inputs) {
-                    input.value = '';
+//             if (data.name.length >= 3 && data.price) {
+//                 data.id = Date.now();
+//                 products.push(data);
+//                 localStorage.setItem('products', JSON.stringify(products));
+//                 showProducts(products);
+//                 data = {
+//                     id: '',
+//                     name: '',
+//                     price: '',
+//                     size: '',
+//                     color: '',
+//                     gender: '',
+//                     imageUrl: '',
+//                 }
+//                 for (input of inputs) {
+//                     input.value = '';
 
-                }
-            } else {
-                alert('Incorrect form');
-            }
+//                 }
+//             } else {
+//                 alert('Incorrect form');
+//             }
 
-        });
-    }
+//         });
+//     }
 
 
-    for (input of inputs) {
-        input.addEventListener('input', (e) => {
-            data[e.target.attributes.name.value] = e.target.value;
-            console.log(data);
-        });
-    }
-}
+//     for (input of inputs) {
+//         input.addEventListener('input', (e) => {
+//             data[e.target.attributes.name.value] = e.target.value;
+//             console.log(data);
+//         });
+//     }
+// }
 
-document.querySelector('.products-container').addEventListener('click', (e) => {
-    if (e.target.nodeName = 'BUTTON' && e.target.dataset.id) {
-        console.log(e.target.dataset.id);
-        products = products.filter((product) => {
-            return +product.id !== +e.target.dataset.id;
-        });
-        localStorage.setItem('products', JSON.stringify(products));
-        showProducts(products);
-    }
+// document.querySelector('.products-container').addEventListener('click', (e) => {
+//     if (e.target.nodeName = 'BUTTON' && e.target.dataset.id) {
+//         console.log(e.target.dataset.id);
+//         products = products.filter((product) => {
+//             return +product.id !== +e.target.dataset.id;
+//         });
+//         localStorage.setItem('products', JSON.stringify(products));
+//         showProducts(products);
+//     }
+// });
+
+// showProducts(products);
+// handleForm();
+
+
+const form = document.querySelector('.add-product');
+const addProductButton = document.getElementById('add-product');
+
+addProductButton.addEventListener('click', function (e) {
+	e.preventDefault();
+	let data = new URLSearchParams(new FormData(form)).toString();
+
+	fetch('/add-product', {
+		method: 'POST',
+		body: data,
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		}
+	}).then((res) => {
+		console.log('Success: ', res);
+	}).catch((err) => {
+		console.log('Error: ', err);
+	});
+
 });
-
-showProducts(products);
-handleForm();
