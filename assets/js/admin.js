@@ -74,14 +74,22 @@
 //     for (input of inputs) {
 //         input.addEventListener('input', (e) => {
 //             data[e.target.attributes.name.value] = e.target.value;
+<<<<<<< HEAD
 //             // console.log(data);
+=======
+//             console.log(data);
+>>>>>>> 61d22d316e834d013e63705c24a6f68d30e9c6e1
 //         });
 //     }
 // }
 
 // document.querySelector('.products-container').addEventListener('click', (e) => {
 //     if (e.target.nodeName = 'BUTTON' && e.target.dataset.id) {
+<<<<<<< HEAD
 //         // console.log(e.target.dataset.id);
+=======
+//         console.log(e.target.dataset.id);
+>>>>>>> 61d22d316e834d013e63705c24a6f68d30e9c6e1
 //         products = products.filter((product) => {
 //             return +product.id !== +e.target.dataset.id;
 //         });
@@ -94,6 +102,7 @@
 // handleForm();
 
 
+<<<<<<< HEAD
 
 const form = document.querySelector('.add-product');
 const sendButton = document.querySelector('#add-product');
@@ -123,5 +132,25 @@ sendButton.addEventListener('click', function (e) {
     });
 
 
+=======
+const form = document.querySelector('.add-product');
+const addProductButton = document.getElementById('add-product');
+
+addProductButton.addEventListener('click', function (e) {
+	e.preventDefault();
+	let data = new URLSearchParams(new FormData(form)).toString();
+
+	fetch('/add-product', {
+		method: 'POST',
+		body: data,
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		}
+	}).then((res) => {
+		console.log('Success: ', res);
+	}).catch((err) => {
+		console.log('Error: ', err);
+	});
+>>>>>>> 61d22d316e834d013e63705c24a6f68d30e9c6e1
 
 });

@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 	// filter
 	const menCheckbox = document.getElementById('checkbox-men');
-	// const womenCheckbox = document.getElementById('checkbox-women');
+
 	if (menCheckbox) {
 		const searchParams = new URLSearchParams(window.location.search);
 		for (let param of searchParams) {
@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 				showProducts(products);
 			}
 		}
-
 
 		menCheckbox.addEventListener('change', (e) => {
 
@@ -98,12 +97,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			}
 		});
 
+
 		if (menCheckbox.checked === true) {
 			products = products.filter((p) => {
 				return p.gender === 'men';
 			});
 		}
-
 	}
+
+
 
 });
