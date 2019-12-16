@@ -1,13 +1,14 @@
 var express = require('express');
 var path = require('path');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser')
 var app = express();
 var productModel = require('./db/models/product');
 
 mongoose.connect('mongodb+srv://admin:admin@cluster0-deibq.mongodb.net/itstep?retryWrites=true&w=majority', {
-		useNewUrlParser: true,
-		useUnifiedTopology: true
-	},
+	useNewUrlParser: true,
+	useUnifiedTopology: true
+},
 	function (err) {
 
 		if (err) throw err;
@@ -32,6 +33,8 @@ mongoose.connect('mongodb+srv://admin:admin@cluster0-deibq.mongodb.net/itstep?re
 
 app.use(express.static('./assets'));
 app.use(express.static('./dist'));
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -44,6 +47,19 @@ app.get('/', function (req, res) {
 app.get('/admin', function (req, res) {
 	res.render('admin');;
 });
+
+app.post('/add-product', function (req, res) {
+	console.log(req.body);
+	const product = new productModel({
+		price: req.body.ololo
+	});
+
+	product.save(function (err) {
+		if (!err) console.log('Success   olololololo!');
+	});
+
+	res.send('OLOLO');
+})
 
 app.listen(3000, function () {
 	console.log('App running on port 3000!');
