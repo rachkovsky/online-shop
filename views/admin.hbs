@@ -1,20 +1,39 @@
 <div class="container">
-    <button>clear form</button>
+
     <form class="add-product">
         <div>
-            <label>Name:<input required name="name" type="text"></label>
+            <label>Name:
+                <input name="name" type="text">
+            </label>
         </div>
         <div>
-            <label>Price:<input required name="price" type="text"></label>
+            <label>Price:
+                <input name="price" type="text">
+            </label>
         </div>
         <div>
-            <label>Size:<input name="size" type="text"></label>
+            <label>Size:
+                <select name="size" id="">
+                    <option value="xs">XS</option>
+                    <option value="x">S</option>
+                    <option value="m">M</option>
+                    <option value="l">L</option>
+                    <option value="xl">XL</option>
+                    <option value="xxl">XXL</option>
+                </select>
+            </label>
+            
         </div>
         <div>
             <label>Color:<input name="color" type="text"></label>
         </div>
         <div>
-            <label>Gender:<input name="gender" type="text"></label>
+            <label>Gender:
+                <select name="gender" id="">
+                    <option value="men">Men</option>
+                    <option value="women">Women</option>
+                </select>
+            </label>
         </div>
         <div>
             <label>ImageUrl:<input name="imageUrl" type="text"></label>

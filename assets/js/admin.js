@@ -95,24 +95,89 @@
 // showProducts(products);
 // handleForm();
 
+const params = {
+    name: {
+        required: {
+            value: true,
+            errorMessage: 'Field is required'
+        },
+        minLength: {
+            value: 2,
+            errorMessage: 'Value is too shoort'
+        }
+    },
+    price: {
+        required: {
+            value: true,
+            errorMessage: 'Price is required'
+        },
+    }
+};
+
 
 const form = document.querySelector('.add-product');
 const addProductButton = document.getElementById('add-product');
 
-addProductButton.addEventListener('click', function (e) {
-    e.preventDefault();
-    let data = new URLSearchParams(new FormData(form)).toString();
 
-    fetch('/add-product', {
-        method: 'POST',
-        body: data,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+if (form) {
+    addProductButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        let isValid = validateForm(params, form);
+
+        if (isValid) {
+        // let data = new URLSearchParams(new FormData(form)).toString();
+    
+        // fetch('/add-product', {
+        //     method: 'POST',
+        //     body: data,
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded'
+        //     }
+        // }).then((res) => {
+        //     console.log('Success: ', res);
+        // }).catch((err) => {
+        //     console.log('Error: ', err);
+        // });
+    
         }
-    }).then((res) => {
-        console.log('Success: ', res);
-    }).catch((err) => {
-        console.log('Error: ', err);
+        
     });
 
-});
+}
+
+
+
+
+function validateForm(params, form) {
+
+    if (form) {
+        [...form.elements].forEach(function(el, i){
+            // console.log(el.name);
+            if (el.name && el.name in params) {
+                for (rule in params[el.name]) {
+                    switch (rule) {
+                        case 'required' :
+                            console.log(rule);
+                            if (params[el.name][rule].value === true) {
+                                if  (el.value === '') {
+                                    // console.log('empty');
+                                    var a = document.createElement("div");
+                                    a.className = "error";
+                                    a.innerText = params[el.name][rule].errorMessage;
+                                    el.parentElement.appendChild(a);
+                                } else {
+                                    console.log('not empty');
+                                }
+                            }
+                        case 'minLength' : 
+                            // console.log('');
+                    }
+                }
+            }
+        });
+    }
+
+
+}
+
+// validateForm({}, form);

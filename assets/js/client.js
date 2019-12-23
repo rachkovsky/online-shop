@@ -9,10 +9,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	}
 
 	const filter = {
+
+		
 		gender: ['men'],
 		price: {
 			min: '0',
-			max: '9000'
+			max: '9000' 
 		}
 	}
 

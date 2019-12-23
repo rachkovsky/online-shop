@@ -46,11 +46,11 @@ app.set('view engine', 'hbs');
 
 app.get('/', function (req, res) {
 
-	res.render('main');
+	res.render('main', { layout: 'clientLayout' });
 });
 
 app.get('/admin', function (req, res) {
-	res.render('admin');;
+	res.render('admin', { layout: 'adminLayout' });;
 });
 
 app.get('/products', function (req, res) {
