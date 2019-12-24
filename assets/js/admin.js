@@ -96,22 +96,22 @@
 // handleForm();
 
 const params = {
-    name: {
-        required: {
-            value: true,
-            errorMessage: 'Field is required'
-        },
-        minLength: {
-            value: 2,
-            errorMessage: 'Value is too shoort'
-        }
-    },
-    price: {
-        required: {
-            value: true,
-            errorMessage: 'Price is required'
-        },
-    }
+	name: {
+		required: {
+			value: true,
+			errorMessage: 'Name is required'
+		},
+		minLength: {
+			value: 2,
+			errorMessage: 'Name is too shoort'
+		}
+	},
+	price: {
+		required: {
+			value: true,
+			errorMessage: 'Price is required'
+		},
+	}
 };
 
 
@@ -120,28 +120,29 @@ const addProductButton = document.getElementById('add-product');
 
 
 if (form) {
-    addProductButton.addEventListener('click', function (e) {
-        e.preventDefault();
-        let isValid = validateForm(params, form);
+	addProductButton.addEventListener('click', function (e) {
+		e.preventDefault();
+		let isValid = validateForm(params, form);
+		console.log(isValid);
 
-        if (isValid) {
-        // let data = new URLSearchParams(new FormData(form)).toString();
-    
-        // fetch('/add-product', {
-        //     method: 'POST',
-        //     body: data,
-        //     headers: {
-        //         'Content-Type': 'application/x-www-form-urlencoded'
-        //     }
-        // }).then((res) => {
-        //     console.log('Success: ', res);
-        // }).catch((err) => {
-        //     console.log('Error: ', err);
-        // });
-    
-        }
-        
-    });
+		if (isValid) {
+			// let data = new URLSearchParams(new FormData(form)).toString();
+
+			// fetch('/add-product', {
+			//     method: 'POST',
+			//     body: data,
+			//     headers: {
+			//         'Content-Type': 'application/x-www-form-urlencoded'
+			//     }
+			// }).then((res) => {
+			//     console.log('Success: ', res);
+			// }).catch((err) => {
+			//     console.log('Error: ', err);
+			// });
+
+		}
+
+	});
 
 }
 
@@ -150,34 +151,57 @@ if (form) {
 
 function validateForm(params, form) {
 
-    if (form) {
-        [...form.elements].forEach(function(el, i){
-            // console.log(el.name);
-            if (el.name && el.name in params) {
-                for (rule in params[el.name]) {
-                    switch (rule) {
-                        case 'required' :
-                            console.log(rule);
-                            if (params[el.name][rule].value === true) {
-                                if  (el.value === '') {
-                                    // console.log('empty');
-                                    var a = document.createElement("div");
-                                    a.className = "error";
-                                    a.innerText = params[el.name][rule].errorMessage;
-                                    el.parentElement.appendChild(a);
-                                } else {
-                                    console.log('not empty');
-                                }
-                            }
-                        case 'minLength' : 
-                            // console.log('');
-                    }
-                }
-            }
-        });
-    }
+	if (form) {
 
+		let formValid = true;
+
+		const errors = Array.from(document.querySelectorAll('.vf.error'));
+		if (errors) {
+			errors.forEach((el) => {
+				el.remove();
+			});
+		}
+
+		[...form.elements].forEach(function (el, i) {
+
+			let errorMessages = [];
+			let errContainer = document.createElement("div");
+			errContainer.className = "vf error";
+
+			if (el.name && el.name in params) {
+				for (rule in params[el.name]) {
+					switch (rule) {
+						case 'required':
+							if (params[el.name][rule].value === true) {
+								if (el.value === '') {
+									errorMessages.push(params[el.name][rule].errorMessage);
+								}
+							};
+							break;
+						case 'minLength':
+							if (el.value.length < params[el.name][rule].value) {
+								errorMessages.push(params[el.name][rule].errorMessage);
+							};
+							break;
+					}
+				}
+			}
+
+			if (errorMessages.length > 0) {
+				formValid = false;
+
+				errorMessages.forEach((message) => {
+					let p = document.createElement("p");
+					p.innerText = message;
+					errContainer.appendChild(p);
+				});
+
+				el.parentElement.appendChild(errContainer);
+			}
+
+		});
+
+		return formValid;
+	}
 
 }
-
-// validateForm({}, form);
